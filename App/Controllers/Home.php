@@ -2,10 +2,23 @@
 
 namespace App\Controllers;
 
+use Core\View;
+
 class Home extends \Core\Controller
 {
-    public function index()
+    public function indexAction()
     {
-        echo "Home index action";
+        // (new View())->render(BASEDIR.'/App/Views/Home/index.php',[
+        //     "home" => "controller",
+        //     "name" => "zhangsan",
+        // ]);
+        // 
+        View::renderTemplate('Home/index.html',
+            [
+                "home" => "controller",
+                "name" => "zhangsan",
+            ]
+        );
     }
+
 }

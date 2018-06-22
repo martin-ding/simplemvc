@@ -4,17 +4,17 @@ namespace  App\Controllers;
 
 class Posts extends \Core\Controller
 {
-    public function index()
+    public function indexAction()
     {
-        echo "post index function";
+        \Core\View::renderTemplate("Posts/index.html");
     }
 
-    public function newOne()
+    public function newAction()
     {
-        echo "post new function";
+        echo "post new function <br/>";
     }
 
-    public function edit()
+    public function editAction()
     {
         var_dump($this->route_params);
     }

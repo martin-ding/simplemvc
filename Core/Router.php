@@ -52,7 +52,7 @@ class Router
         $route = preg_replace('/\{([a-z-]+):(.*)\}/','(?<\1>\2)',$route);
         $route = '/^'.$route.'$/i';
         # 变成  "/^(\?<controller>[a-z]+)\/(\?<action>[a-z]+)$/i"
-        $this->routes[] = $route;
+        $this->routes[$route] = $params;
     }
 
     public function autoload($class_name)
@@ -69,7 +69,7 @@ class Router
     {
         $url = $this->removeQueryStringVariables($url);
         if ($this->match($url)) {
-            $controller =  '\\App\\Controllers\\'.$this->convertToStudlyCaps($this->params['controller']);
+            $controller = $this->getNameSpace() . $this->convertToStudlyCaps($this->params['controller']);
             $action = $this->convertToCamelCase($this->params['action']);
             if (class_exists($controller)) {
                 $controller_class = new $controller($this->params);
@@ -116,6 +116,15 @@ class Router
         return lcfirst(str_replace('-', '', ucwords($str, "-")));
     }
 
+    public function getNameSpace()
+    {
+        $namespace = "\\App\\Controllers\\";
+        if (array_key_exists("namespace", $this->params)) {
+            $namespace .= $this->params['namespace'] . '\\';
+        }
+        return $namespace;
+    }
+
 
     /**
      * Get all the routes from the routing table
@@ -146,10 +155,8 @@ class Router
         
         #只要符合这个规则的 都认为是ok的 controller/action
         // $regex = "/(?<controller>[a-z]+)\/(?<action>[a-z]+)/";
-        foreach ($this->routes as $route) {
+        foreach ($this->routes as $route => $params) {
             if (preg_match($route, $url, $matches)){
-
-                $params = [];
                 foreach ($matches as $key => $match) {
                     if (is_string($key)) { #只提取我们自己想要的url信息
                         $params[$key] = $match;

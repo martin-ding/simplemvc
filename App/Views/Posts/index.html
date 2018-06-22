@@ -4,5 +4,11 @@
 Posts pages
 {% endblock %}
 {% block body %}
-    wow
+    {% for post in posts %}
+       <h1>{{ post.title }}</h1>
+       <ul>
+           <li>{{ post.body }}</li>
+           <li>{{ post.created_at|date("m/d/Y") }}</li>
+       </ul>
+    {% endfor %}
 {% endblock%}

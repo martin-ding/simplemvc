@@ -6,7 +6,9 @@ class Posts extends \Core\Controller
 {
     public function indexAction()
     {
-        \Core\View::renderTemplate("Posts/index.html");
+        $post = new \App\Models\Post();
+        $allposts = $post->getAll();
+        \Core\View::renderTemplate("Posts/index.html",['posts' => $allposts]);
     }
 
     public function newAction()

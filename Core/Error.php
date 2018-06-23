@@ -20,11 +20,35 @@ class Error
 	*/
 	public static function exception_handler($exception)
 	{
-		echo "<h1>Fata Error</h1>";
-		echo "<p>Uncaught Exception :". get_class($exception) ."</p>";
-		echo "<p>Message: ".$exception->getMessage()."</p>";
-		echo "<p>Stack Trace : <pre>".$exception->getTraceAsString()."</pre></p>";
-		echo "<p>Thrown in ".$exception->getFile()." on line ".$exception->getLine()."</p>";
+		$code = $exception->getCode();
+		if($code != 404) {
+			$code = 500;
+		}
+		http_response_code($code);
+
+		if (ENIVERMENT != "production") {
+			echo "<h1>Fata Error</h1>";
+			echo "<p>Uncaught Exception :". get_class($exception) ."</p>";
+			echo "<p>Message: ".$exception->getMessage()."</p>";
+			echo "<p>Stack Trace : <pre>".$exception->getTraceAsString()."</pre></p>";
+			echo "<p>Thrown in ".$exception->getFile()." on line ".$exception->getLine()."</p>";
+		} else {
+			$message = "Fata Error".PHP_EOL;
+			$message .= "Uncaught Exception :". get_class($exception) ."".PHP_EOL ;
+			$message .= "Message: ".$exception->getMessage()."".PHP_EOL;
+			$message .= "Stack Trace : ".$exception->getTraceAsString()."".PHP_EOL;
+			$message .= "Thrown in ".$exception->getFile()." on line ".$exception->getLine()."".PHP_EOL;
+			$log_file = BASEDIR."/App/logs/".date("Y-m-d").".php";
+			ini_set("error_log",$log_file);
+			error_log($message);
+
+			// if($code == 404) {
+			// 	echo "<h1>This Page is Gone</h1>";
+			// } else {
+			// 	echo "<h1>Server Error</h1>";
+			// }
+			View::renderTemplate($code.'.html');
+		}
 	}
 
 }

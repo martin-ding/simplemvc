@@ -18,7 +18,7 @@ class DB extends Singleton
 
     public function _init()
     {
-        $config = new Config(BASEDIR."/App/configs");
+        $config = Register::get("config");
         $dbconfig = $config['database']['local'];
         $this->host = $dbconfig['host'];
         $this->dbname = $dbconfig['dbname'];

@@ -4,7 +4,7 @@ $array = [
 	'local' =>  [
 		'host' => "localhost",
 		'username' => "root",
-		'passwd' => "11111dd",
+		'passwd' => "111111dd",
 		'dbname' => "test",
 	]
 ];

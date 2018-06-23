@@ -15,9 +15,11 @@ abstract class Controller
     {
         $call_method = $method . "Action";
         if($this->before() !== false) {
-            if (is_callable([$this,$call_method])) {
+            if (method_exists($this,$call_method)) {
                 call_user_func_array([$this,$call_method], $params);
                 $this->after();
+            } else {
+                throw new \Exception(get_class($this) . " <b>$call_method</b> is not callable");
             }
         }
     }

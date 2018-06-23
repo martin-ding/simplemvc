@@ -2,9 +2,9 @@
 
 define(BASEDIR, dirname(__DIR__)); #获取项目的根目录
 
-
 require_once BASEDIR.'/vendor/autoload.php';
-
+set_error_handler('Core\Error::error_handler');
+set_exception_handler('Core\Error::exception_handler');
 // $loader = new Twig_Loader_Filesystem('/path/to/templates');
 // $twig = new Twig_Environment($loader, array(
 //     'cache' => '/path/to/compilation_cache',
@@ -49,3 +49,4 @@ $url = substr($url, 1);
 // require BASEDIR . '/App/Controllers/Posts.php';
 
 $router->dispatch($url);
+

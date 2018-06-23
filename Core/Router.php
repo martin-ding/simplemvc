@@ -76,13 +76,13 @@ class Router
                 if (is_callable([$controller_class, $action])) {
                     call_user_func_array([$controller_class, $action],[]);
                 } else {
-                    echo "The action ${action} in ${controller} is not callable";
+                      throw new Exception( "The action ${action} in ${controller} is not callable");
                 }
             } else {
-                echo "$controller not exits";
+                throw new Exception("$controller not exits");
             }
         } else {
-            echo "do not have this route";
+              throw new Exception( "do not have this route");
         }
     }
 
